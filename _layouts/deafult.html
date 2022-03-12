@@ -25,8 +25,10 @@
         </a>
         <h2>{{ site.description | default: site.github.project_tagline }}</h2>
         {% if site.github.is_project_page %}
+          <aside id="sidebar">
           <a href="{{ site.github.repository_url }}" class="button"><small>View project on</small> GitHub</a>
-          <a href="TFG_Teleco_Meritxell.pdf" download="Bachelor-thesis-Meritxell" type="application/pdf" class="button"><small>PDF</small>Bachelor Thesis</a>
+          <a href="TFG_Aero_Meritxell.pdf" download="Bachelor-thesis-Meritxell" type="application/pdf" class="button"><small>PDF</small>Bachelor Thesis</a>
+           </aside>
           {% if site.show_downloads %}
               <a href="{{ site.github.zip_url }}" class="button"><small>Download zip file</small></a>
               <a href="TFG_Teleco_Meritxell.pdf" download="Bachelor-thesis-Meritxell" type="application/pdf" class="button">PDF Bachelor thesis></a>
