@@ -3,6 +3,7 @@
   <head>
     <meta charset='utf-8'>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="shortcut icon" href="assets/images/agile.png" type="image/x-icon">  
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}" media="screen" type="text/css">
     <link rel="stylesheet" href="{{ '/assets/css/print.css' | relative_url }}" media="print" type="text/css">
@@ -25,16 +26,10 @@
         <h2>{{ site.description | default: site.github.project_tagline }}</h2>
         {% if site.github.is_project_page %}
           <a href="{{ site.github.repository_url }}" class="button"><small>View project on</small> GitHub</a>
-          
-              <a href="{{ site.github.zip_url }}" class="button">
-                <small>Download</small>
-                .zip file
-              </a>
-              <a href="TFG_Teleco_Meritxell.pdf" download="Bachelor-thesis-Meritxell" type="application/pdf" class="button">PDF Bachelor thesis>
-                <small>Download</small>
-                PDF file
-              </a>
-            
+          {% if site.show_downloads %}
+              <a href="{{ site.github.zip_url }}" class="button"><small>Download zip file</small></a>
+              <a href="TFG_Teleco_Meritxell.pdf" download="Bachelor-thesis-Meritxell" type="application/pdf" class="button">PDF Bachelor thesis></a>
+          {% endif %}  
         {% endif %}
         {% if site.github.is_user_page %}
           <a href="{{ site.github.owner_url }}" class="button"><small>Follow me on</small> GitHub</a>
