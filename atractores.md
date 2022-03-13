@@ -9,9 +9,9 @@ Por otro lado, para hablar de los atractores extraños es necesario introducir l
 Un sistema dinámico que presente un **atractor extraño** es denominado sistema caótico y exhibirá un comportamiento no predecible. Esta definición puede parecer contradictoria con el concepto introducido anteriormente de atractor. En un sistema caótico que presente atractores extraños se sabe que su comportamiento general será siempre el mismo y tendrá la misma forma en todos los casos (representada por las mismas ecuaciones) (esto no estoy seguro, ponlo solo si es verdad y te convence), pero no se puede conocer el estado exacto del sistema en un instante determinado, es impredecible. A pesar de que estos sistemas son deterministas, un pequeño error de medición en las condiciones iniciales provoca resultados muy diferentes, complicando su predicción a largo plazo.
 
 El atractor extraño más famoso es el **atractor de Lorenz**. Este atractor aparece en el sistema dinámico caótico que postuló Edward N. Lorenz en 1963 para modelar, de forma simplificada, el comportamiento de grandes masas de aire en la atmósfera. Asimismo existen otros atractores extraños usados en este proyecto, todos ellos representados a continuación junto con las ecuaciones que los caracterizan:
-- El **atractor de Rössler** que aparece en los sistemas de reacciones químicas oscilantes~\cite{atractor-ros}.
-- El **atractor de Thomas** presenta una forma simétrica en las variables $x$, $y$, y $z$~\cite{atractor-tho}.
-- El **atractor del sistema caótico unificado de tres lóbulos o en inglés __Three-Scroll Unified Chaotic System__** el cual se obtiene de una particularización en los parámetros del atractor de Lü. 
+- El **atractor de Rössler** que aparece en los sistemas de reacciones químicas oscilantes.
+- El **atractor de Thomas** presenta una forma simétrica en las variables *x*, *y*, y *z*.
+- El **atractor del sistema caótico unificado de tres lóbulos** o en inglés *Three-Scroll Unified Chaotic System* el cual se obtiene de una particularización en los parámetros del atractor de Lü. 
 
 ![](/assets/images/atractores.png)
 
