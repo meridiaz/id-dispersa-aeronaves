@@ -51,14 +51,14 @@
   margin-left: 50px;
 }
 
+#main {
+  transition: margin-left .5s;
+  padding: 16px;
+}
+
 @media screen and (max-height: 450px) {
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
-}
-  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
-.main {
-  transition: margin-left .5s;
-  padding: 20px;
 }
 
 </style>
@@ -79,8 +79,8 @@
     </header>
 
     <div id="content-wrapper">
-      <div class="inner clearfix">
-        <section id="main-content" class="main">
+      <div id="main" class="inner clearfix">
+        <section id="main-content">
           {{ content }}
         </section>
         <aside id="sidebar">
@@ -99,10 +99,12 @@
 <script>
 function openNav() {
   document.getElementById("mySidenav").style.width = "250px";
+  document.getElementById("main").style.marginLeft = "250px";
 }
 
 function closeNav() {
   document.getElementById("mySidenav").style.width = "0";
+  document.getElementById("main").style.marginLeft= "0";
 }
 </script>    
           {% if site.show_downloads %}
