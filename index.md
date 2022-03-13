@@ -18,11 +18,8 @@ Gracias al uso de SINDy en este campo sería posible obtener modelos más precis
 
 También se ha llegado a diversas conclusiones en cuanto a los parámetros opcionales que ofrece este algoritmo, concretamente: se ha visto en varios experimentos que utilizar múltiples trayectorias cuya condición inicial sea distinta resulta muy beneficioso; aplicar restricciones para forzar que uno de los términos aparezca en la salida del algoritmo puede empeorar el error al cambiar el punto óptimo; aportar las derivadas de las variables cuando se dispone de ellas, para evitar que el algoritmo tenga que calcularlas numéricamente, ayuda a mejorar el error; usar una suposición inicial, la cual puede mejorar el error si se utiliza un menor número de trayectorias, pero en ningún caso lo empeora; y cambiar el paso de tiempo permite al algoritmo detectar aquellos coeficientes cuyo orden de magnitud en la ecuación es pequeño.
 
-Por otro lado, es necesario prestar atención a las diferencias entre los órdenes de magnitud de los distintos coeficientes de las ecuaciones. Tal y como se ha visto, una diferencia substancial en ellos puede ocasionar que el algoritmo no detecte aquellos con un valor más pequeño. Para evitar esto, es necesario normalizar/adimensionalizar la ecuación o multiplicar dichos coeficientes con un valor pequeño.
+Por último, es especialmente interesante la robustez que ofrece este algoritmo en determinados tipos de ecuaciones ante ruido. En la mayoría de casos el error ante ruidos elevados es pequeño, por lo que usar esta técnica en un entorno real (donde las trayectorias son ruidosas) puede ser muy interesante. 
 
-Además, es especialmente interesante la robustez que ofrece este algoritmo en determinados tipos de ecuaciones ante ruido. En la mayoría de casos el error ante ruidos elevados es pequeño, por lo que usar esta técnica en un entorno real (donde las trayectorias son ruidosas) puede ser muy interesante. 
-
-Por último, cabe destacar que el algoritmo SINDy es capaz de obtener las ecuaciones de atractores extraños con una elevada precisión, por lo que es posible utilizar esta técnica para recuperar modelos dinámicos a partir de trayectorias caóticas.
 
 ## Agradecimientos
 <table>
