@@ -34,75 +34,57 @@ En concreto, el sistema utilizado en este proyecto será el sistema de **ejes vi
 
 Se han seleccionado el sistema de ejes viento porque junto con el sistema ejes cuerpo es el más utilizado y permite proyectar fácilmente los vectores de las fuerzas aerodinámicas.
 
+En este proyecto los movimientos simulados son simétricos, con las alas a nivel y con el empuje orientado según la dirección <img src="https://render.githubusercontent.com/render/math?math=x_w"> por lo que las ecuaciones dinámicas de la aeronave son las siguientes
+
+![](/assets/images/ec_din.png)
+
+Por otro lado, para la obtención de las ecuaciones del planeador se utilizan las ecuaciones cinemáticas
+
+![](/assets/images/ec_cin.png)
+
 ## SINDy
 
 __Sparse Identification of Nonlinear Dynamics__ o SINDy, es una técnica desarrollada principalmente en la universidad de Washington, Seattle. El objetivo es obtener las ecuaciones que modelan la dinámica de un sistema a partir de mediciones de sus variables de interés, para sistemas de ecuaciones de la forma representada en la ecuación. Esta técnica aplica a diversas áreas como la ingeniería, finanzas, ecología o epidemiología. La necesidad de desarrollar esta técnica surge, por un lado de la gran cantidad de datos y técnicas para procesarlos de los que se dispone hoy en día, y por otro lado de la escasez de soluciones existentes para obtener la dinámica de un sistema a partir de estos datos medidos. Su implementación se ha realizado en el lenguaje de programación Python a través de la libería [PySINDy](https://joss.theoj.org/papers/10.21105/joss.02104).
 
-El algoritmo que implementa la técnica de SINDy recibe dos entradas. La primera es una matriz con mediciones de las variables de estado <img src="https://render.githubusercontent.com/render/math?math=\bbX \in \reals^{m \times n}"> donde __m__ es el número de instantes temporales considerados y __n__ el número de variables de estado, i.e. la dimensión del vector de estado $\bbx \in \reals^n$. La segunda entrada es un conjunto de las $p$ funciones candidatas básicas sobre las que realizar la regresión. Por último, SINDy también recibe como entrada las derivadas del vector de estado para todos los instantes, $\dot{\bbX} \in \reals^{m \times n}$, las cuales son calculadas por la librería PySINDy en caso de que el usuario no las proporcione. A su salida, SINDy obtiene el mínimo número de funciones de entre las candidatas necesarias para describir las trayectorias que recibe a su entrada, junto con los coeficientes y variables de estado asociadas a cada función. 
+El algoritmo que implementa la técnica de SINDy recibe dos entradas. La primera es una matriz con mediciones de las variables de estado <img src="https://render.githubusercontent.com/render/math?math=\textbf{X} \in \mathbb R^{m \times n}"> donde<img src="https://render.githubusercontent.com/render/math?math=m"> es el número de instantes temporales considerados y <img src="https://render.githubusercontent.com/render/math?math=n"> el número de variables de estado, i.e. la dimensión del vector de estado <img src="https://render.githubusercontent.com/render/math?math=\textbf{x} \in \mathbb R^n">. La segunda entrada es un conjunto de las <img src="https://render.githubusercontent.com/render/math?math=p"> funciones candidatas básicas sobre las que realizar la regresión. Por último, SINDy también recibe como entrada las derivadas del vector de estado para todos los instantes, <img src="https://render.githubusercontent.com/render/math?math=\dot{\textbf{X}} \in \mathbb R^{m \times n}">, las cuales son calculadas por la librería PySINDy en caso de que el usuario no las proporcione. A su salida, SINDy obtiene el mínimo número de funciones de entre las candidatas necesarias para describir las trayectorias que recibe a su entrada, junto con los coeficientes y variables de estado asociadas a cada función. 
 
-Más formalmente, las entradas de SINDy se organizan en dos matrices. La primera de ellas es la matriz de trayectorias $\bbX$
+Más formalmente, las entradas de SINDy se organizan en dos matrices. La primera de ellas es la matriz de trayectorias <img src="https://render.githubusercontent.com/render/math?math=\textbf{X}">
 
-\begin{equation}
-\bbX = 
-    \begin{bmatrix}
-        x^T(t_1) \\
-        x^T(t_2) \\
-        \vdots \\
-        x^T(t_m)
-    \end{bmatrix}
-    = \begin{bmatrix}
-        x_1(t_1) & x_2(t_1) & \ldots & x_n(t_1) \\
-        x_1(t_2) & x_2(t_2) & \ldots & x_n(t_2) \\
-        \vdots & \vdots & \ddots & \vdots \\
-         x_1(t_m) & x_2(t_m) & \ldots & x_n(t_m) \\
-    \end{bmatrix}.
-\end{equation}
+![](/assets/images/matriz_x.png)
  
- % theta(X) recibe una mat de tamaño mxn y devuelve una matriz de mxp
- 
-Por otro lado, SINDy también recibe una matriz de funciones no lineales candidatas $ \bbTheta(\bbX) \in \mathbb R^{m \times p}$, construida a partir de la función $\bbTheta: \mathbb R^{m \times n} \rightarrow \mathbb R^{m \times p}$, que aproximan los datos de entrada y donde $p$ es el número de funciones posibles a considerar. Por ejemplo, la siguiente $\bbTheta(\bbX)$ contiene términos constantes y polinómicos de hasta grado 3 (cada uno de ellos perteneciente a una librería distinta)
+Por otro lado, SINDy también recibe una matriz de funciones no lineales candidatas <img src="https://render.githubusercontent.com/render/math?math=\textbf{\Theta}(\textbf{X}) \in \mathbb R^{m \times p}">, construida a partir de la función <img src="https://render.githubusercontent.com/render/math?math=\textbf{\Theta}: \mathbb R^{m \times n} \rightarrow \mathbb R^{m \times p}">, que aproximan los datos de entrada y donde <img src="https://render.githubusercontent.com/render/math?math=p"> es el número de funciones posibles a considerar. Por ejemplo, la siguiente <img src="https://render.githubusercontent.com/render/math?math=\textbf{\Theta}(\textbf{X})"> contiene términos constantes y polinómicos de hasta grado 3 (cada uno de ellos perteneciente a una librería distinta)
 
-\begin{equation}
-    \bbTheta(\bbX) = 
-    \begin{bmatrix}
-        \mid & \mid & \mid & \mid \\
-        1 & \bbX & \bbX^{P_2} & \bbX^{P_3}\\
-        \mid & \mid & \mid & \mid
-    \end{bmatrix}, 
-\end{equation}
-%
-donde $\bbX^{P_2} \in \mathbb R^{m\times p_2}$ denota la matriz
-\begin{equation}
-   \bbX^{P_2} = 
-   \begin{bmatrix}
-        x_1^2(t_1) & x_1(t_1)x_2(t_1) & \ldots & x_2^2(t_1) & \ldots & x_n^2(t_1) \\
-        x_1^2(t_2) & x_1(t_2)x_2(t_2) & \ldots & x_2^2(t_2) & \ldots & x_n^2(t_2) \\
-        \vdots & \vdots & \ddots & \vdots & \ddots & \vdots\\
-         x_1^2(t_m) & x_1(t_m)x_2(t_m) & \ldots & x_2^2(t_m) & \ldots & x_n^2(t_m) \\
-    \end{bmatrix}.
-    \nonumber
-\end{equation}
+![](/assets/images/matriz_theta.png)
 
-Como se puede ver $\bbTheta(\bbX)$ contiene en cada columna el valor de cada una de las funciones candidatas, $\bbf$, para todos los instantes temporales, y en cada fila todas las combinaciones posibles de funciones candidatas entre todas las variables de estado para un determinado instante temporal. $L$ es el número de librerías de funciones a considerar (términos constantes y polinómicas de grado 1, 2 y 3 en el ejemplo anterior, por lo que $L=4$ en este caso) y $p = \sum_{i = 0}^{L} p_i$ representa el número total de funciones a considerar. Existe un gran cantidad de soluciones posibles, por lo que SINDy utiliza regresión dispersa para determinar los coeficientes de la matriz $\bbXi \in \mathbb R^{p\times n}$ que activan aquellas funciones de la matriz $\bbTheta(\bbX)$. Se define 
+donde <img src="https://render.githubusercontent.com/render/math?math=\textbf{X}^{P_2} \in \mathbb R^{m\times p_2}">  denota la matriz
 
-\begin{align}
-    \bbXi &= 
-    \begin{bmatrix}
-        \bbxi_1 & \bbxi_2 &  \ldots & \bbxi_n
-    \end{bmatrix} 
-    \nonumber \\
-    \dot{\bbX} &= \bbTheta(\bbX)\bbXi,
-\end{align}
-%
-donde $\bbxi_k \in \reals^p$ son los coeficientes asociados a la variable de estado $k$.
+![](/assets/images/matriz_xp2.png)
 
-SINDy utiliza \textbf{regresión dispersa}, la cual consiste en asumir que solo existen unos pocos términos relevantes por los cuales aproximar la ecuación. Un ejemplo de este tipo de algoritmo sería el representado en la siguiente ecuación
+Como se puede ver <img src="https://render.githubusercontent.com/render/math?math=\textbf{\Theta}(\textbf{X})"> contiene en cada columna el valor de cada una de las funciones candidatas, <img src="https://render.githubusercontent.com/render/math?math=\textbf{f}">, para todos los instantes temporales, y en cada fila todas las combinaciones posibles de funciones candidatas entre todas las variables de estado para un determinado instante temporal. <img src="https://render.githubusercontent.com/render/math?math=L"> es el número de librerías de funciones a considerar (términos constantes y polinómicas de grado 1, 2 y 3 en el ejemplo anterior, por lo que <img src="https://render.githubusercontent.com/render/math?math=L=4"> en este caso) y <img src="https://render.githubusercontent.com/render/math?math=p = \sum_{i = 0}^{L} p_i"> representa el número total de funciones a considerar. Existe un gran cantidad de soluciones posibles, por lo que SINDy utiliza regresión dispersa para determinar los coeficientes de la matriz <img src="https://render.githubusercontent.com/render/math?math=\textbf{\Xi} \in \mathbb R^{p\times n}"> que activan aquellas funciones de la matriz <img src="https://render.githubusercontent.com/render/math?math=\textbf{\Theta}(\textbf{X})">. Se define 
 
-\begin{equation}
-    \min_{\bbXi}\| \dot{\bbX} - \bbTheta(\bbX) \bbXi\|^2_F \mbox{ sujeto a } \|\bbXi\|_0 \leq \epsilon, 
-    \label{eq:reg-espar-mat}
-\end{equation}
+![](/assets/images/matriz_xi.png)
 
-{\color{red} no debería poner $\|\bbXi\|_0$ en  el texto y no $\|\bbxi_k\|_0$???}
-%
-donde $\| \cdot \|_F$ representa la norma de Frobenius, $\|\bbXi\|_0$ es la norma 0 de la matriz $\bbXi$ y denota la suma de valores distintos de cero. Por otro lado, $\epsilon$ representa un escalar que limita el número de valores distintos de cero de la matriz $\bbXi$. Las funciones de la matriz $\bbTheta(\bbX) \in \mathbb R^ {m \times p}$ asociadas a la variable de estado $k$ son activadas por los coeficientes del vector $\bbxi_k \in \mathbb R^p$. La principal suposición que se realiza es que $m \gg p$. De manera que la derivada de cada elemento se denota por $\dot{\bbX} \approx \bbTheta(\bbX) \bbXi$~\cite{esparse-reg}.
+
+donde <img src="https://render.githubusercontent.com/render/math?math=\textbf{\xi_k} \in \mathbb R^p"> son los coeficientes asociados a la variable de estado <img src="https://render.githubusercontent.com/render/math?math=k">.
+
+SINDy utiliza **regresión dispersa**, la cual consiste en asumir que solo existen unos pocos términos relevantes por los cuales aproximar la ecuación. Un ejemplo de este tipo de algoritmo sería el representado en la siguiente ecuación
+
+![](/assets/images/prob_opt.png)
+
+donde <img src="https://render.githubusercontent.com/render/math?math=\| \cdot \|_F"> representa la norma de Frobenius, <img src="https://render.githubusercontent.com/render/math?math=\|\textbf{\Xi}\|_0"> es la norma 0 de la matriz <img src="https://render.githubusercontent.com/render/math?math=\textbf{\Xi}"> y denota la suma de valores distintos de cero. Por otro lado, <img src="https://render.githubusercontent.com/render/math?math=\epsilon"> representa un escalar que limita el número de valores distintos de cero de la matriz  <img src="https://render.githubusercontent.com/render/math?math=\textbf{\Xi}">. Las funciones de la matriz <img src="https://render.githubusercontent.com/render/math?math=\textbf{\Theta}(\textbf{X}) \in \mathbb R^ {m \times p}"> asociadas a la variable de estado <img src="https://render.githubusercontent.com/render/math?math=k"> son activadas por los coeficientes del vector <img src="https://render.githubusercontent.com/render/math?math=\textbf{\xi_k} \in \mathbb R^p">. La principal suposición que se realiza es que <img src="https://render.githubusercontent.com/render/math?math=m \gg p">. De manera que la derivada de cada elemento se denota por <img src="https://render.githubusercontent.com/render/math?math=\dot{\textbf{X}} \approx \textbf{\Theta}(\textbf{X}) \textbf{\Xi}">.
+
+La implementación del algoritmo SINDy en la librería PySINDy permite configurar diversas entradas a su algoritmo. Las más relevantes son:
+- **Matriz de datos,** <img src="https://render.githubusercontent.com/render/math?math=\textbf{X}">: tal y como se indica anteriormente debe contener en sus filas los distintos instantes temporales y en sus columnas las variables de estado.
+- **Matriz de derivadas,** <img src="https://render.githubusercontent.com/render/math?math=\dot{\textbf{X}}"> (opcional): similar al caso anterior pero ahora debe contener el valor de las derivadas del vector de estado en cada instante temporal.
+- **Paso de tiempo** (opcional, por defecto 1): PySINDy permite indicar el lapso de tiempo que transcurre entre las muestras del vector de tiempos <img src="https://render.githubusercontent.com/render/math?math=\textbf{t}">.
+- **Librería de funciones candidatas**: PySINDy debe recibir las funciones candidatas para las cuales aproximar <img src="https://render.githubusercontent.com/render/math?math=\dot{\textbf{X}}">. Existen diversas librerías ya creadas como la polinómica o de Fourier (incluye términos trigonométricos).
+- **Optimizador** (opcional, por defecto __Sequentially thresholded least squares algorithm__, STLSQ): PySINDy permite indicar qué optimizador usará en el proceso de regresión dispersa para la obtención de los pesos o coeficientes. 
+    - **STLSQ**: el funcionamiento general de este optimizador consiste en a cada iteración se calculan los valores de los pesos y se da un valor de 0 a aquellos coeficientes inferiores a un umbral (por defecto 0.1), con la intención de conseguir una solución dispersa.
+        
+    - **Regresión regularizada relajada dispersa** (__Sparse relaxed regularized regression__, SR3): esta propuesta es más robusta a errores y falsos positivos. 
+    - **SR3 restringido** (__Sparse relaxed regularized regression with linear equality constraints__): este optimizador es similar al anterior, pero permite al usuario indicar una serie de restricciones lineales del tipo menor o igual a aplicar sobre los pesos.
+
+   En este proyecto se ha utilizado el optimizador SR3 para todos los casos, excepto en aquellos en los que se introducen restricciones sobre un coeficiente determinado, en estos casos se utilizará el optimizador SR3 restringido.
+- **Diferenciador** (opcional, por defecto diferencia de derivadas finitas o __finite difference derivatives__): SINDy permite, como ya hemos indicado, recibir como argumento opcional la matriz de derivadas. Si no se le pasa dicha matriz, el algoritmo necesita calcularla, y utilizará para ello el diferenciador que le indiquemos en este argumento. Existen diferentes diferenciadores según la naturaleza de los datos (ruidosos o que presentan un paso de tiempo no uniforme). En el caso del método por defecto calcula las derivadas usando la aproximación de Taylor de primer orden. Otros métodos son __savitzky golay__ y __spline__.
+- **Suposición inicial o __initial guess__** (opcional): matriz <img src="https://render.githubusercontent.com/render/math?math=\in \mathbb R^{n\times p}"> que indica la suposición inicial a partir de la cual el optimizador debe empezar a buscar el valor de los pesos o matriz <img src="https://render.githubusercontent.com/render/math?math=\textbf{\Xi}^T">.
+- **Múltiples trayectorias** (opcional, por defecto falso): indica si existen varias trayectorias para los datos presentes en la matriz <img src="https://render.githubusercontent.com/render/math?math=\textbf{X}">. Estas trayectorias pueden variar sus condiciones iniciales o contener datos para distintos instantes temporales.
