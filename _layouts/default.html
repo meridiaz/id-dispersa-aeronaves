@@ -7,7 +7,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" href="{{ '/assets/css/style.css?v=' | append: site.github.build_revision | relative_url }}" media="screen" type="text/css">
     <link rel="stylesheet" href="{{ '/assets/css/print.css' | relative_url }}" media="print" type="text/css">
-    <link rel="stylesheet" href="micss.css" media="print" type="text/css">
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -80,10 +79,12 @@
     </header>
 
     <div id="content-wrapper">
-      <div class="inner clearfix" class="main">
-        <section id="main-content" id="main">
+      <div class="inner clearfix">
+        <div id="main">
+        <section id="main-content">
           {{ content }}
         </section>
+          <\div>
 
         <aside id="sidebar">
           <div id="mySidenav" class="sidenav">
