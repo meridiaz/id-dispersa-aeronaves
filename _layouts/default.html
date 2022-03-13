@@ -56,6 +56,12 @@
   .sidenav {padding-top: 15px;}
   .sidenav a {font-size: 18px;}
 }
+  /* Style page content - use this if you want to push the page content to the right when you open the side navigation */
+#main {
+  transition: margin-left .5s;
+  padding: 20px;
+}
+
 </style>
   <body>
     <header>
@@ -75,7 +81,7 @@
 
     <div id="content-wrapper">
       <div class="inner clearfix" class="main">
-        <section id="main-content">
+        <section id="main-content" id="main">
           {{ content }}
         </section>
 
