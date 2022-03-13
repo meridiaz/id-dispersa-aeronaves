@@ -14,7 +14,7 @@ Esta página web se organiza de la siguiente manera:
 ## Agradecimientos
 <table>
   <tr>
-<td align="center"><img src="persona_generica.png?raw=true" height="120" width="110px;" alt=""/><br /><sub><b>Pablo Solano López</b></sub></a><br /><a title="Code">💻</a> <a title="Documentation">📖</a></td>
+<td align="center"><img src="assets/images/persona_generica.png?raw=true" height="120" width="110px;" alt=""/><br /><sub><b>Pablo Solano López</b></sub></a><br /><a title="Code">💻</a> <a title="Documentation">📖</a></td>
   
 <td align="center"><a href="https://github.com/vmtenorio"><img src="https://github.com/vmtenorio/vmtenorio.github.io/blob/master/images/vmtg.jpg?raw=true" height="120" width="100px;" alt=""/><br /><sub><b>Víctor Manuel Tenorio Gómez</b></sub></a><br /><a title="Code">💻</a> <a title="Answering Questions">💬</a> <a title="Documentation">📖</a> <a title="Reviewed Pull Requests" >👀</a></td>
 
