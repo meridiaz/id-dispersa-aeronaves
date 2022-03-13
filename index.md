@@ -1,37 +1,23 @@
-## Welcome to GitHub Pages
+# Sobre este proyecto
 
-You can use the [editor on GitHub](https://github.com/meridiaz/id-dispersa-aeronaves/edit/gh-pages/index.md) to maintain and preview the content for your website in Markdown files.
+Este proyecto trata un área de gran interés poco explorada con anterioridad. Se trata de obtener las ecuaciones que modelan el movimiento de una aeronave a partir de datos de sus trayectorias. Para ello, se utilizará la técnica de regresión dispersa o [SINDy](https://www.pnas.org/doi/10.1073/pnas.1517384113).
+Se analizará si esta técnica resulta viable para esta aplicación y se darán indicaciones sobre aquellos parámetros y transformaciones que es necesario llevar a cabo para la obtención de resultados precisos.
 
-Whenever you commit to this repository, GitHub Pages will run [Jekyll](https://jekyllrb.com/) to rebuild the pages in your site, from the content in your Markdown files.
 
-### Markdown
+## Índice
+Esta página web se organiza de la siguiente manera:
+- Se explicarán los [conceptos teóricos asociados a SINDy](./teoria.html)
+- Se detallarán los casos prácticos implementados:
+  - [Atractores extraños](./atractores.html), se trata de los atractores de Lorenz, Rössler, Thomas y Three-Scroll Unified Chaotic System
+  - [Trayectorias de aeronaves](./aeronaves.html) para el caso de un planeador, un turborreactor en vuelo rectilíneo horizontal y lazo ideal en el plano vertical
 
-Markdown is a lightweight and easy-to-use syntax for styling your writing. It includes conventions for
+## Agradecimientos
+<table>
+  <tr>
+<td align="center"><a href="https://github.com/glimmerphoenix"><img src="https://avatars.githubusercontent.com/u/1359409?v=4" height="120" width="110px;" alt=""/><br /><sub><b>Pablo Solano López</b></sub></a><br /><a title="Code">💻</a> <a title="Documentation">📖</a></td>
+  
+<td align="center"><a href="https://github.com/vmtenorio"><img src="https://github.com/vmtenorio/vmtenorio.github.io/blob/master/images/vmtg.jpg?raw=true" height="120" width="100px;" alt=""/><br /><sub><b>Víctor Manuel Tenorio Gómez</b></sub></a><br /><a title="Code">💻</a> <a title="Answering Questions">💬</a> <a title="Documentation">📖</a> <a title="Reviewed Pull Requests" >👀</a></td>
 
-```markdown
-Syntax highlighted code block
-
-# Header 1
-## Header 2
-### Header 3
-
-- Bulleted
-- List
-
-1. Numbered
-2. List
-
-**Bold** and _Italic_ and `Code` text
-
-[Link](url) and ![Image](src)
-```
-
-For more details see [Basic writing and formatting syntax](https://docs.github.com/en/github/writing-on-github/getting-started-with-writing-and-formatting-on-github/basic-writing-and-formatting-syntax).
-
-### Jekyll Themes
-
-Your Pages site will use the layout and styles from the Jekyll theme you have selected in your [repository settings](https://github.com/meridiaz/id-dispersa-aeronaves/settings/pages). The name of this theme is saved in the Jekyll `_config.yml` configuration file.
-
-### Support or Contact
-
-Having trouble with Pages? Check out our [documentation](https://docs.github.com/categories/github-pages-basics/) or [contact support](https://support.github.com/contact) and we’ll help you sort it out.
+<td align="center"><img src="assets/images/mother.jpg?raw=true" height="120" width="100px;" alt=""/><br /><sub><b>My mother</b></sub><br /><a title="Code">💻<a title="Reviewed Pull Requests" >👀</a> <strong> ❤️ </strong></a></td>
+</tr>  
+</table>
