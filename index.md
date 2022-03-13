@@ -28,6 +28,6 @@ Por último, es especialmente interesante la robustez que ofrece este algoritmo 
   
 <td align="center"><a href="https://github.com/vmtenorio"><img src="https://github.com/vmtenorio/vmtenorio.github.io/blob/master/images/vmtg.jpg?raw=true" height="120" width="100px;" alt=""/><br /><sub><b>Víctor Manuel Tenorio Gómez</b></sub></a><br /><a title="Code">💻</a> <a title="Answering Questions">💬</a> <a title="Documentation">📖</a> <a title="Reviewed Pull Requests" >👀</a></td>
 
-<td align="center"><img src="https://raw.githubusercontent.com/meridiaz/MLOps-Evaluation/gh-pages/assets/images/mother.jpg" height="120" width="100px;" alt=""/><br /><sub><b>My mother</b></sub><br /><a title="Code">💻<a title="Reviewed Pull Requests" >👀</a> <strong> ❤️ </strong></a></td>
+<td align="center"><img src="https://raw.githubusercontent.com/meridiaz/MLOps-Evaluation/gh-pages/assets/images/mother.jpg" height="120" width="100px;" alt=""/><br /><sub><b>Mi madre</b></sub><br /><a title="Code">💻<a title="Reviewed Pull Requests" >👀</a> <strong> ❤️ </strong></a></td>
 </tr>  
 </table>
