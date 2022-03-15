@@ -39,8 +39,8 @@
         </section>
         <aside id="sidebar">
                  
-
-          <nav>
+        {{page.content}}
+          <!-- <nav>
             <ul>
               {% assign headers = page.content | split: '<h' %}
             {% for header in headers %}
@@ -55,7 +55,7 @@
                       </li>
         {% endfor %}
  <\ul>
-</nav>
+</nav>-->
 {% endfor %}
           {% if site.show_downloads %}
               <a href="{{ site.github.zip_url }}" class="button"><small>Descargar el</small>fichero .zip</a>
