@@ -44,8 +44,8 @@
         <aside id="sidebar">
                  
           <nav>
+            <h3 class="navbar-title">Contenidos:</h3>
             <ul>
-              <h3 class="navbar-title">Contenidos:</h3>
               {% assign headers = content | split: '<h' %}
               {% for header in headers %}
                 {% assign _string = header | split: '</h' %}
