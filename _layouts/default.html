@@ -39,19 +39,20 @@
         </section>
         <aside id="sidebar">
                  
-        {{page.content}}
+        <!--{{content}}-->
           <nav>
             <ul>
-              {% assign headers = page.content | split: '<h' %}
+              {% assign headers = content | split: '<h' %}
               {% for header in headers %}
-                  {% assign _string = header | split: '</h' %}
+                {% assign _string = header | split: '</h' %}
                 {% capture _hAttrToStrip %}{{ _string[0] | split: '>' | first }}>{% endcapture %}
                 {% assign title = _string[0] | replace: _hAttrToStrip, '' %}
-           
-                <h1> {{title}}<\h1>  
+
+                <h1> {{title}}<\h1>
                   <li>
                     <a href=#{{title}}>{{title}}</a>
                   </li>
+                  <p>{{header}}</p>
               {% endfor %}
             <\ul>
 </nav>
