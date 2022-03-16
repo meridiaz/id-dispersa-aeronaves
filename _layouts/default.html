@@ -15,6 +15,10 @@
 {% seo %}
 
     {% include head-custom.html %}
+    <style>
+      .navbar-item {font-family: 'Architects Daughter'; font-size: 20px;color: #2879d0;}
+      .navbar-title   {font-family: 'Architects Daughter'; font-size: 24px;color: #474747;"}
+      </style>
   </head>
   <body>
     <header>
@@ -39,9 +43,9 @@
         </section>
         <aside id="sidebar">
                  
-        <!--{{content}}-->
           <nav>
             <ul>
+              <h3 class="navbar-title">Contenidos:</h3>
               {% assign headers = content | split: '<h' %}
               {% for header in headers %}
                 {% assign _string = header | split: '</h' %}
@@ -49,7 +53,7 @@
                 {% assign title = _string[0] | replace: _hAttrToStrip, '' %}
                 {% if title.size > 0 %}
                   <li>
-                    <a href=#{{title | slugify}} style="font-family: 'Architects Daughter'; font-size: 20px;">{{title}}</a>
+                    <a class="navbar-item" href=#{{title | slugify}}>{{title}}</a>
                   </li>
                 {% endif %}
               {% endfor %}
