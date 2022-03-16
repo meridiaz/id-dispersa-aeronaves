@@ -40,23 +40,21 @@
         <aside id="sidebar">
                  
         {{page.content}}
-          <!-- <nav>
+          <nav>
             <ul>
               {% assign headers = page.content | split: '<h' %}
-            {% for header in headers %}
-              {% assign _string = header | split: '</h' %}
-            {% capture _hAttrToStrip %}{{ _string[0] | split: '>' | first }}>{% endcapture %}
-            {% assign title = _string[0] | replace: _hAttrToStrip, '' %}
-
+              {% for header in headers %}
+                  {% assign _string = header | split: '</h' %}
+                {% capture _hAttrToStrip %}{{ _string[0] | split: '>' | first }}>{% endcapture %}
+                {% assign title = _string[0] | replace: _hAttrToStrip, '' %}
            
-              <h1> {title}<\h1>  
-                      <li>
-                          <a href=#{{title}}>{{title}}</a>
-                      </li>
-        {% endfor %}
- <\ul>
-</nav>-->
-{% endfor %}
+                <h1> {{title}}<\h1>  
+                  <li>
+                    <a href=#{{title}}>{{title}}</a>
+                  </li>
+              {% endfor %}
+            <\ul>
+</nav>
           {% if site.show_downloads %}
               <a href="{{ site.github.zip_url }}" class="button"><small>Descargar el</small>fichero .zip</a>
               <a href="TFG_Aero_Meritxell.pdf" download="Bachelor-thesis-Meritxell" type="application/pdf" class="button"><small>Descargar</small>Memoria</a>
