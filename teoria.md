@@ -82,7 +82,6 @@ La implementación del algoritmo SINDy en la librería PySINDy permite configura
 - **Librería de funciones candidatas**: PySINDy debe recibir las funciones candidatas para las cuales aproximar <img src="https://render.githubusercontent.com/render/math?math=\dot{\textbf{X}}">. Existen diversas librerías ya creadas como la polinómica o de Fourier (incluye términos trigonométricos).
 - **Optimizador** (opcional, por defecto *Sequentially thresholded least squares algorithm*, STLSQ): PySINDy permite indicar qué optimizador usará en el proceso de regresión dispersa para la obtención de los pesos o coeficientes. 
     - **STLSQ**: el funcionamiento general de este optimizador consiste en a cada iteración se calculan los valores de los pesos y se da un valor de 0 a aquellos coeficientes inferiores a un umbral (por defecto 0.1), con la intención de conseguir una solución dispersa.
-        
     - **Regresión regularizada relajada dispersa** (*Sparse relaxed regularized regression*, SR3): esta propuesta es más robusta a errores y falsos positivos. 
     - **SR3 restringido** (*Sparse relaxed regularized regression with linear equality constraints*): este optimizador es similar al anterior, pero permite al usuario indicar una serie de restricciones lineales del tipo menor o igual a aplicar sobre los pesos.
 
