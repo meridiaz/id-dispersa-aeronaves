@@ -47,13 +47,13 @@
                 {% assign _string = header | split: '</h' %}
                 {% capture _hAttrToStrip %}{{ _string[0] | split: '>' | first }}>{% endcapture %}
                 {% assign title = _string[0] | replace: _hAttrToStrip, '' %}
-                {% if title | length > 0 %}
+                {% if title|length > 0 %}
                   <li>
-                    <a href=#{{title | lower}}>{{title}}</a>
+                    <a href=#{{title|lower}}>{{title}}</a>
                   </li>
                 {% endif %}
               {% endfor %}
-            <\ul>
+              </ul>
           </nav>
           {% if site.show_downloads %}
               <a href="{{ site.github.zip_url }}" class="button"><small>Descargar el</small>fichero .zip</a>
