@@ -8,7 +8,7 @@ Se analizará si esta técnica resulta viable para esta aplicación y se darán 
 Esta página web se organiza de la siguiente manera:
 - Se explicarán los [conceptos teóricos](./teoria.html) asociados al modelado de sistemas, ecuaciones de una aeronave y aquellos conceptos necesarios para entender la técnica propuesta en SINDy.
 - Se detallarán los casos prácticos implementados:
-  - [Atractores extraños](./atractores.html), se trata de los atractores de Lorenz, Rössler, Thomas y Three-Scroll Unified Chaotic System
+  - [Atractores extraños](./atractores.html), se trata de los atractores de Lorenz, Rössler, Thomas y Three-Scroll Unified Chaotic System.
   - [Trayectorias de aeronaves](./aeronaves.html) para el caso de un planeador, un turborreactor en vuelo rectilíneo horizontal y lazo ideal en el plano vertical
 
 ## Conclusiones
@@ -18,7 +18,11 @@ Gracias al uso de SINDy en este campo sería posible obtener modelos más precis
 
 También se ha llegado a diversas conclusiones en cuanto a los parámetros opcionales que ofrece este algoritmo, concretamente: se ha visto en varios experimentos que utilizar múltiples trayectorias cuya condición inicial sea distinta resulta muy beneficioso; aplicar restricciones para forzar que uno de los términos aparezca en la salida del algoritmo puede empeorar el error al cambiar el punto óptimo; aportar las derivadas de las variables cuando se dispone de ellas, para evitar que el algoritmo tenga que calcularlas numéricamente, ayuda a mejorar el error; usar una suposición inicial, la cual puede mejorar el error si se utiliza un menor número de trayectorias, pero en ningún caso lo empeora; y cambiar el paso de tiempo permite al algoritmo detectar aquellos coeficientes cuyo orden de magnitud en la ecuación es pequeño.
 
-Por último, es especialmente interesante la robustez que ofrece este algoritmo en determinados tipos de ecuaciones ante ruido. En la mayoría de casos el error ante ruidos elevados es pequeño, por lo que usar esta técnica en un entorno real (donde las trayectorias son ruidosas) puede ser muy interesante. 
+Por otro lado, es necesario prestar atención a las diferencias entre los órdenes de magnitud de los distintos coeficientes de las ecuaciones. Tal y como se ha visto, una diferencia substancial en ellos puede ocasionar que el algoritmo no detecte aquellos con un valor más pequeño. Para evitar esto, es necesario normalizar/adimensionalizar la ecuación o multiplicar dichos coeficientes con un valor pequeño.
+
+Además, es especialmente interesante la robustez frente al ruido que ofrece este algoritmo en determinados tipos de ecuaciones. En la mayoría de casos el error ante ruidos elevados es pequeño, por lo que usar esta técnica en un entorno real (donde las trayectorias son ruidosas) puede ser muy interesante. Sin embargo, ante ecuaciones con mayor número de términos y matemáticamente más complejas, el error en los coeficientes de la ecuación es elevado. Para mejorar el resultado sería interesante aplicar el algoritmo SINDy para trayectorias ruidosas, propuesto en (el siguiente artículo)[https://doi.org/10.1098%2Frspa.2020.0279]. No obstante, la utilización de SINDy sigue siendo viable a la hora de estimar los coeficientes en un entorno real, pues las trayectorias con términos muy complejos no son habituales. 
+
+Por último, cabe destacar que el algoritmo SINDy es capaz de obtener las ecuaciones de atractores extraños con una elevada precisión, por lo que es posible utilizar esta técnica para recuperar modelos dinámicos a partir de trayectorias caóticas.
 
 
 ## Agradecimientos
