@@ -86,7 +86,7 @@ Al alimentar al algoritmo SINDy con trayectorias sintéticas que siguen la cuaci
 ### Caso C-1
 En este caso y a diferencia del anterior, se cosideran velocidades pequeñas, por lo que el término de la resistencia dependiente de <img src="https://render.githubusercontent.com/render/math?math=1{\hat{V}^2}"> ya no se puede despreciar de la ecuación. La ecuación que modela este movimiento es la siguiente.
 
-<img src="https://render.githubusercontent.com/render/math?math= \hat{\dot{V}} = -a\hat{V}^2 + c - \frac{b}{\hat{V}^2}">,
+<img src="https://render.githubusercontent.com/render/math?math=\hat{\dot{V}} = -a\hat{V}^2 + c - \frac{b}{\hat{V}^2}">,
 
 donde <img src="https://render.githubusercontent.com/render/math?math=b = k \frac{g^2}{\frac{1}{2} \rho_{aire}U_c^3}"> y <img src="https://render.githubusercontent.com/render/math?math=a"> y <img src="https://render.githubusercontent.com/render/math?math=c"> siguen las expresiones detalladas en el caso anterior C-1.
 
@@ -164,20 +164,18 @@ donde
 Al alimentar al algoritmo SINDy con trayectorias sintéticas que siguen la cuación anterior se obtiene la siguiente trayectoria simulada junto al sistema de ecuaciones predicho:
 ![trayectoria caso D-2](/assets/images/casoD2.png)
 
-## Resultados y conclusiones
-En la tabla que se muestra a continuación se representa la ecuación teórica, la obtenida por el algoritmo y error cuadrático medio en los coeficientes entre dichas ecuaciones.
+## Resultados 
+
+Para concluir este capítulo se representa en la siguiente tabla una comparativa entre las ecuaciones teóricas y las ecuaciones obtenidas por el algoritmo y el error cuadrático medio en los coeficientes. Esta tabla, al igual que el gráfico de barras localizado al final de este apartado se han generado utilizando 20 trayectorias para los datos de entrenamiento. De nuevo, para aumentar la robustez de los resultados se ha repetido todo el proceso de generación de datos, creación del modelo, entrenamiento del mismo y validación de resultados en diez ocasiones y se muestra la mediana del error de estas diez ejecuciones.
+
 ![tabla ecuaciones](/assets/images/resumen_casos.png)
 
-A lo largo de este proyecto se ha tratado analizar si es posible utilizar la técnica SINDy, basada en regresión dispersa, en el campo de la ingeniería aeroespacial para la predicción de las ecuaciones que modelan el comportamiento de una aeronave en vuelo a partir de datos de sus trayectorias. El resultado es positivo, es decir, es posible utilizar SINDy en este ámbito, sin embargo, puede ser necesario llevar a cabo una serie de transformaciones a las datos. Tal y como se ha visto en el capítulo anterior normalizar y, sobretodo, adimensionalizar ecuaciones complejas facilita que el algoritmo obtenga las ecuaciones correctamente.
+En dicha tabla se puede observar que de manera general el algoritmo es capaz de recuperar correctamente las ecuaciones, mostrando un error en los coeficientes de las mismas bajo. Sin embargo, en el caso C-2, tanto para la aproximación de orden 2 como de orden 3, se puede ver que el error asociado es mayor. Esto puede ser debido a que el algoritmo es alimentado con trayectorias que siguen la ecuación del caso C-1 en la tabla pero se utiliza una librería polinómica de grado 2 y 3 en la que no aparece el término <img src="https://render.githubusercontent.com/render/math?math=1/v^2">. El algoritmo, en lugar de obtener los coeficientes asociados al desarrollo en serie de Taylor entorno al punto 1, trata de aproximar la trayectoria en todos los puntos, la cual no ha sido generada utilizando esta aproximación. Esto se confirma si vemos el error asociado a los coeficientes en la tabla y el error asociado a la trayectoria, ver gráfica de la trayectoria del caso C-2, estos difieren considerablemente.
 
-Gracias al uso de SINDy en este campo sería posible obtener modelos más precisos simplemente a partir de los datos medidos por los sensores ya instalados. También nos permitiría obtener modelos más simples, que aunque no contengan todos los elementos de la ecuación teórica también describan de manera precisa el movimiento de la aeronave. Por otro lado, es especialmente interesante alimentar al algoritmo con utilizando datos de trayectorias breves temporalmente, ya que el algoritmo es capaz de obtener trayectorias mucho más largas en el tiempo con bastante precisión.
+Por otro lado, vemos que para el caso D-1 el error asociado a los coeficientes es mayor que el caso homólogo D-2, esto es debido a que el coeficiente asociado al término <img src="https://render.githubusercontent.com/render/math?math=(\cos{\gamma})^2/v^2"> no es detectado correctamente por el algoritmo. 
 
-También se ha llegado a diversas conclusiones en cuanto a los parámetros opcionales que ofrece este algoritmo, concretamente: se ha visto en varios experimentos que utilizar múltiples trayectorias cuya condición inicial sea distinta resulta muy beneficioso; aplicar restricciones para forzar que uno de los términos aparezca en la salida del algoritmo puede empeorar el error al cambiar el punto óptimo; aportar las derivadas de las variables cuando se dispone de ellas, para evitar que el algoritmo tenga que calcularlas numéricamente, ayuda a mejorar el error; usar una suposición inicial, la cual puede mejorar el error si se utiliza un menor número de trayectorias, pero en ningún caso lo empeora; y cambiar el paso de tiempo permite al algoritmo detectar aquellos coeficientes cuyo orden de magnitud en la ecuación es pequeño.
+En el gráfico de barras se representa el error cuadrático medio de los coeficientes de las ecuaciones teóricas y predichas representadas en la tabla anterior. No se ha incluido el caso A debido a que la estimación de los coeficientes era perfecta, y el error que mostraba era debido a la resolución del ordenador, obstaculizando la correcta visualización de los órdenes de magnitud del resto de casos.
 
-Por otro lado, es necesario prestar atención a las diferencias entre los órdenes de magnitud de los distintos coeficientes de las ecuaciones. Tal y como se ha visto, una diferencia substancial en ellos puede ocasionar que el algoritmo no detecte aquellos con un valor más pequeño. Para evitar esto, es necesario normalizar/adimensionalizar la ecuación o multiplicar dichos coeficientes con un valor pequeño.
-
-Además, es especialmente interesante la robustez frente al ruido que ofrece este algoritmo en determinados tipos de ecuaciones. En la mayoría de casos el error ante ruidos elevados es pequeño, por lo que usar esta técnica en un entorno real (donde las trayectorias son ruidosas) puede ser muy interesante. Sin embargo, ante ecuaciones con mayor número de términos y matemáticamente más complejas, el error en los coeficientes de la ecuación es elevado. Para mejorar el resultado sería interesante aplicar el algoritmo SINDy para trayectorias ruidosas, propuesto en [este artículo](https://doi.org/10.1098%2Frspa.2020.0279). No obstante, la utilización de SINDy sigue siendo viable a la hora de estimar los coeficientes en un entorno real, pues las trayectorias con términos muy complejos no son habituales. 
-
-Por último, cabe destacar que el algoritmo SINDy es capaz de obtener las ecuaciones de atractores extraños con una elevada precisión, por lo que es posible utilizar esta técnica para recuperar modelos dinámicos a partir de trayectorias caóticas.
+![error en los coeficientes](/assets/images/error_coefs.png)
 
 [volver](./)
