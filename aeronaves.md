@@ -8,54 +8,17 @@ En el desarrollo de cada uno de los seis experimentos planteados se ha seguido u
 2.    **Generación de las trayectorias sintéticas:** en este paso se generan mediante software trayectorias sintéticas a partir de datos físicos de la aeronave o valores ya conocidos, como es la superficie alar o la densidad del aire. Para ello, se implementan las ecuaciones de la aeronave para unas condiciones iniciales aleatorias, con densidad de probabilidad uniforme en un rango que se especificará en cada caso. A continuación, se normalizan/adimensionalizan, según el caso, vía software (dividiendo entre la velocidad máxima) y se añade ruido. También se obtiene una trayectoria de validación que será utilizada para medir el error obtenido.
 3.    **Creación y entrenamiento del modelo de SINDy**: una vez generadas las trayectorias, se elige la librería de funciones a utilizar, el optimizador y, si es necesario, las restricciones y suposición inicial. Por último se entrena el modelo de SINDy para obtener las ecuaciones que mejor se adaptan a los datos proporcionados.
 4.    **Evaluación de resultados:** una vez obtenido el modelo que SINDy considera más adecuado se evalúan cualitativamente las ecuaciones obtenidas verificando que tienen los términos adecuados, se prueban las trayectorias obtenidas por dicho modelo obteniendo el error entre la trayectoria proporcionada por el algoritmo y la sintética y, en algunos casos, se calcula el error cuadrático entre los coeficientes del modelo que obtiene SINDy y los valores esperados.
-5.    **Variación de las entradas y parámetros que el algoritmo permite configurar**, detalladas en el [este enlace](https://meridiaz.github.io/id-dispersa-aeronaves/teoria.html#par%C3%A1metros-configurables). El objetivo es comprobar cómo afecta la variación de estas entradas en el desempeño del modelo calculado. 
+5.    **Variación de las entradas y parámetros que el algoritmo permite configurar**, detallados en el [este enlace](https://meridiaz.github.io/id-dispersa-aeronaves/teoria.html#par%C3%A1metros-configurables). El objetivo es comprobar cómo afecta la variación de estas entradas en el desempeño del modelo calculado. 
 
-El siguiente pseudocódigo implementa los pasos anteriores.
-```
-# PASO 2
-t = generar_vector_tiempos(n_puntos, paso_tiempo)
-coefs = coeficientes_caso()
-# condiciones iniciales para las trayectorias de train aleatorias
-cond_inic = condiciones_iniciales_aleatorias(n_var, n_trayec, rangos)
-# condiciones iniciales para la trayectoria de validacion no aleatorias
-cond_inic_val = [cond1, cond2, ...]
-# generar los datos segun el caso
-data_train, data_dot_train = generar_trayectoria(t, coefs, cond_inic, n_trayec)
-data_val, data_dot_val = generar_trayectoria(t, coefs, cond_inic_val, 1)
-# normalizar los datos si es necesario
-if normalizar:
-    data_train, data_dot_train = normalizar(data_train, data_dot_train)
-    data_val, _ = normalizar(data_val, data_dot_val)
-# anadir ruido AWGN
-if ruido:
-    data_train, data_dot_train = sumar_ruido(data_train, data_dot_train, pn, pn_dot)
-```
-El código indicado más arriba se encarga de implementar el paso 2 de la lista anterior. En primer lugar, se genera el vector de tiempos y coeficientes para el desarrollo del caso. En segundo lugar, se generan condiciones iniciales aleatorias con densidad de probabilidad uniforme, según el número de incógnitas y trayectorias elegidas, para los datos de entrenamiento, y no aleatorias (deterministas) para los datos de validación, utilizados para medir el error en la trayectoria. En tercer lugar y utilizando estas condiciones iniciales, los coeficientes de la ecuación, el vector de tiempos generado y especificando el número de trayectorias, se genera la matriz de datos, <img src="https://render.githubusercontent.com/render/math?math=\mathbf{\dot{X}}"> así como la de derivadas, <img src="https://render.githubusercontent.com/render/math?math=\mathbf{{X}}">. Los siguientes pasos consisten en normalizar la trayectoria (dividiendo entre la velocidad máxima de la misma) y sumarle ruido, según el caso.
+A continuación se muestra en pseudocódigo la implementación de los pasos anteriores.
+![pseudocódigo del paso 2](/assets/images/pseudo1.png)
+
+El código indicado más arriba se encarga de implementar el paso 2 de la lista anterior. En primer lugar, se genera el vector de tiempos y coeficientes para el desarrollo del caso. En segundo lugar, se generan condiciones iniciales aleatorias con densidad de probabilidad uniforme, según el número de incógnitas y trayectorias elegidas, para los datos de entrenamiento, y no aleatorias (deterministas) para los datos de validación, utilizados para medir el error en la trayectoria. En tercer lugar y utilizando estas condiciones iniciales, los coeficientes de la ecuación, el vector de tiempos generado y especificando el número de trayectorias, se genera la matriz de datos, <img src="https://render.githubusercontent.com/render/math?math=\mathbf{X}"> así como la de derivadas, <img src="https://render.githubusercontent.com/render/math?math=\mathbf{\dot{X}}">. Los siguientes pasos consisten en normalizar la trayectoria (dividiendo entre la velocidad máxima de la misma) y sumarle ruido, según el caso.
 
 Para la generación del ruido se ha considerado ruido aditivo, blanco y gaussiano (AWGN en inglés) que es utilizado para contaminar la matriz <img src="https://render.githubusercontent.com/render/math?math=\mathbf{X}"> y <img src="https://render.githubusercontent.com/render/math?math=\mathbf{\dot{X}}">. Para generarlo se ha normalizado dicho ruido con respecto a la potencia de la señal, de manera que la potencia del ruido representa <img src="https://render.githubusercontent.com/render/math?math=pn"> veces la potencia de la señal original.
 
 En el código mostrado a continuación se implementan los pasos 3 y 4 de la estructura anterior, los cuales se encargan de crear el modelo, entrenarlo y evaluar los resultados obtenidos. El primer lugar, se crea la librería de funciones a utilizar por el algoritmo para la obtención de las ecuaciones. Conocidas las funciones que componen la librería es posible obtener la matriz de coeficientes <img src="https://render.githubusercontent.com/render/math?math=\mathbf{\Xi}"> que debería obtener SINDy. En segundo lugar, se obtienen las restricciones y suposición inicial, si se requiere. En tercer lugar, se crea el modelo de SINDy mediante la sentencia `ps.SINDy`, donde `ps` es un alias para la librería PySINDy, especificando el optimizador, suposición inicial, restricciones, librería de funciones y nombre de las variables. En cuarto lugar, se alimenta al modelo con los datos generados en el código anterior. A continuación, se calcula la trayectoria que simula el algoritmo para las ecuaciones que ha devuelto dada la condición inicial de la trayectoria de validación. Por último, se calcula el error cuadrático medio de los coeficientes de la ecuación y el error entre las trayectorias de validación real y simulada. 
-```
-# PASOS 3 Y 4
-lib = crear_libreria_funciones()
-matriz_real_coefs = crear_mat_coefs(data_train, coefs, lib)
-# generar initial guess y restricciones en caso necesario
-initial_guess, restric_lhs, restric_rhs = generar_prereq(data_train, lib, n_restris, rhs)
-# crear el modelo de SINDy
-model_sindy = ps.SINDy(
-            optimizer=ps.sindy_opt(initial_guess=initial_guess, 
-                    lhs=restric_lhs, rhs=restric_rhs), 
-            feature_library=lib,                                           
-            feature_names=['var1', 'var2'...])   
-# entrenar el modelo de SINDy       
-model_sindy.fit(data_train, t=paso_tiempo, 
-                multiple_trajectories=True, x_dot=data_dot_train)
-# obtener una trayectoria para las ecuaciones calculadas
-x_sim = model_sindy.simulate(cond_inic_val, t)
-# calcular error en trayectoria y coeficientes 
-error_trayec = mean((x_sim-data_val)**2)
-error_coefs = mean((model_sindy.coefficients()-matriz_real_coefs)**2)
-```
+![pseudocódigo del paso 2](/assets/images/pseudo2.png)
 
 ## Casos desarrollados de aeronaves
 
