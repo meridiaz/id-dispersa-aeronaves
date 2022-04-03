@@ -23,6 +23,7 @@ En el código mostrado a continuación se implementan los pasos 3 y 4 de la estr
 ## Casos desarrollados de aeronaves
 
 En la tabla que se muestra a continuación se agrupan los diversos casos realizados sobre trayectorias de aeronaves
+
 ![índice de casos desarrollados sobre aeronaves](/assets/images/tabla_casos_aeronaves2.png)
 
 ### Caso A
@@ -102,6 +103,7 @@ donde los coeficientes son constantes y vienen representados por las siguientes 
 <img src="https://render.githubusercontent.com/render/math?math=A_8 = k">.
 
 Al alimentar al algoritmo SINDy con trayectorias sintéticas que siguen la cuación anterior se obtiene la siguiente trayectoria simulada junto al sistema de ecuaciones predicho:
+
 ![trayectoria caso D-1](/assets/images/casoD1.png)
 
 ### Caso D-2
