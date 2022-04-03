@@ -1,7 +1,6 @@
 # Obtención de las ecuaciones del movimiento de una aeronave
 
 En este apartado se exponen los pasos a seguir y los principales resultados alcanzados. Para más detalle se dirige al lector al capítulo 5 de la memoria. 
-
 ## Arquitectura general
 En el desarrollo de cada uno de los seis experimentos planteados se ha seguido una estructura similar:
 1.    **Obtención de las ecuaciones de la mecánica de vuelo y adimensionalización/normalización de las mismas** [en ejes viento](https://meridiaz.github.io/id-dispersa-aeronaves/teoria.html#sistema-de-referencia-y-ecuaciones-de-una-aeronave). Tal y como se detallará más adelante, eliminar las dimensiones o normalizar los valores entre 0 y 1 permite que el algoritmo calcule de manera más precisa los términos que intervienen en la ecuación.
@@ -37,9 +36,9 @@ En la imagen que se muestra a continuación se puede ver la trayectoria sintéti
 ### Caso B
 En este caso se modela un vuelo con empuje orientado según el sentido que indica el eje <img src="https://render.githubusercontent.com/render/math?math=\x_w"> y describiendo un vuelo rectilíneo, uniforme y simétrico, por lo que el ángulo de asiento de la velocidad, <img src="https://render.githubusercontent.com/render/math?math=\gamma">, es nulo. 
 
-Se sustituye el valor de <img src="https://render.githubusercontent.com/render/math?math=L"> por su expresión <img src="https://render.githubusercontent.com/render/math?math=L = \frac{1}{2} \rho_{aire} V^{2} S c_L"> se despeja de la [ecuación dinámica](https://meridiaz.github.io/id-dispersa-aeronaves/teoria.html#sistema-de-referencia-y-ecuaciones-de-una-aeronave) del eje <img src="https://render.githubusercontent.com/render/math?math=z_w"> el coeficiente de sustentación, <img src="https://render.githubusercontent.com/render/math?math=c_L">. A continuación, se incluye la resistencia aerodinámica por la expresión <img src="https://render.githubusercontent.com/render/math?math=D = \frac{1}{2} \rho_{aire} V^{2} S (c_{D0} + kc_L^2)"> en la ecuación del eje <img src="https://render.githubusercontent.com/render/math?math=x_w"> y se sustituye el <img src="https://render.githubusercontent.com/render/math?math=c_L"> en el término de resistencia aerodinámica inducida. Agrupando los términos constantes, asumiendo velocidades grandes y normalizando la ecuación de la velocidad por la relación <img src="https://render.githubusercontent.com/render/math?math=\hat{V} = V/{U_c}"> se obtiene la siguiente ecuación que modela el comportamiento de la aeronave
+Se sustituye el valor de <img src="https://render.githubusercontent.com/render/math?math=L"> por su expresión <img src="https://render.githubusercontent.com/render/math?math=L = \frac{1}{2} \rho_{aire} V^{2} S c_L"> se despeja de la [ecuación dinámica](https://meridiaz.github.io/id-dispersa-aeronaves/teoria.html#sistema-de-referencia-y-ecuaciones-de-una-aeronave) del eje <img src="https://render.githubusercontent.com/render/math?math=z_w"> el coeficiente de sustentación, <img src="https://render.githubusercontent.com/render/math?math=c_L">. A continuación, se incluye la resistencia aerodinámica por la expresión <img src="https://render.githubusercontent.com/render/math?math=D = \frac{1}{2} \rho_{aire} V^{2} S (c_{D0}">+<img src="https://render.githubusercontent.com/render/math?math=kc_L^2)"> en la ecuación del eje <img src="https://render.githubusercontent.com/render/math?math=x_w"> y se sustituye el <img src="https://render.githubusercontent.com/render/math?math=c_L"> en el término de resistencia aerodinámica inducida. Agrupando los términos constantes, asumiendo velocidades grandes y normalizando la ecuación de la velocidad por la relación <img src="https://render.githubusercontent.com/render/math?math=\hat{V} = V/{U_c}"> se obtiene la siguiente ecuación que modela el comportamiento de la aeronave
 
-<img src="https://render.githubusercontent.com/render/math?math=\hat{\dot{V}} = -a{\hat{V}}^2 + c">,
+<img src="https://render.githubusercontent.com/render/math?math=\hat{\dot{V}} = c -a\hat{V}^2 ">,
 
 donde <img src="https://render.githubusercontent.com/render/math?math=a = \frac{1}{2} \rho_{aire} \frac{S}{m} c_{D0}U_c"> y <img src="https://render.githubusercontent.com/render/math?math=c = \frac{T}{mU_c}">
 
@@ -48,9 +47,9 @@ Al alimentar al algoritmo SINDy con trayectorias sintéticas que siguen la cuaci
 ![trayectoria caso B](/assets/images/casoB.png)
 
 ### Caso C-1
-En este caso y a diferencia del anterior, se cosideran velocidades pequeñas, por lo que el término de la resistencia dependiente de <img src="https://render.githubusercontent.com/render/math?math=1{\hat{V}^2}"> ya no se puede despreciar de la ecuación. La ecuación que modela este movimiento es la siguiente.
+En este caso y a diferencia del anterior, se cosideran velocidades pequeñas, por lo que el término de la resistencia dependiente de <img src="https://render.githubusercontent.com/render/math?math=1/{\hat{V}^2}"> ya no se puede despreciar de la ecuación. La ecuación que modela este movimiento es la siguiente.
 
-<img src="https://render.githubusercontent.com/render/math?math=\hat{\dot{V}} = -a\hat{V}^2 + c - \frac{b}{\hat{V}^2}">,
+<img src="https://render.githubusercontent.com/render/math?math=\hat{\dot{V}} = c -a\hat{V}^2 - \frac{b}{\hat{V}^2}">,
 
 donde <img src="https://render.githubusercontent.com/render/math?math=b = k \frac{g^2}{\frac{1}{2} \rho_{aire}U_c^3}"> y <img src="https://render.githubusercontent.com/render/math?math=a"> y <img src="https://render.githubusercontent.com/render/math?math=c"> siguen las expresiones detalladas en el caso anterior C-1.
 
@@ -59,12 +58,13 @@ Al alimentar al algoritmo SINDy con trayectorias sintéticas que siguen la cuaci
 ![trayectoria caso C-1](/assets/images/casoC1.png)
 
 ### Caso C-2
-En este caso se pretende obtener la ecuación desarrollada en el caso anterior para velocidades pequeñas pero aproximando el término <img src="https://render.githubusercontent.com/render/math?math=1{\hat{V}^2}"> por una aproximación en serie de Taylor de orden 2 y 3. Por tanto, la ecuación aproximada para orden 2 sería la siguiente
+En este caso se pretende obtener la ecuación desarrollada en el caso anterior para velocidades pequeñas pero aproximando el término <img src="https://render.githubusercontent.com/render/math?math=1/{\hat{V}^2}"> por una aproximación en serie de Taylor de orden 2 y 3. Por tanto, la ecuación aproximada para orden 2 sería la siguiente
 
-<img src="https://render.githubusercontent.com/render/math?math=\hat{\dot{V}} = -(a +3b)\hat{V}^2 + 8b\hat{V} + (-6b + c)">
+![ecuacion C-2 orden 2](/assets/images/c2_orden2.png)
+
 y para orden 3
 
-<img src="https://render.githubusercontent.com/render/math?math=\hat{\dot{V}} = 4b\hat{V}^3 -(a + 15b)\hat{V}^2 + 20b\hat{V} + (-10b + c)">.
+![ecuacion C-2 orden 3](/assets/images/c2_orden3.png)
 
 Al alimentar al algoritmo SINDy con trayectorias sintéticas que siguen la cuación anterior se obtiene la siguiente trayectoria simulada junto al sistema de ecuaciones predicho:
 
@@ -92,11 +92,9 @@ donde los coeficientes son constantes y vienen representados por las siguientes 
 
 <img src="https://render.githubusercontent.com/render/math?math=A_4 = \frac{2m}{\rho_{aire} S R}">
 
-<img src="https://render.githubusercontent.com/render/math?math=A_5 = c_{D0} + kA_4^2">
+<img src="https://render.githubusercontent.com/render/math?math=A_5=c_{D0}">+<img src="https://render.githubusercontent.com/render/math?math=kA_4^2">
 
 <img src="https://render.githubusercontent.com/render/math?math=A_6 = 2kA_4">
-
-<img src="https://render.githubusercontent.com/render/math?math=A_5 = c_{D0} + kA_4^2">
 
 <img src="https://render.githubusercontent.com/render/math?math=A_7 = 1">
 
@@ -109,7 +107,7 @@ Al alimentar al algoritmo SINDy con trayectorias sintéticas que siguen la cuaci
 ### Caso D-2
 En este caso las incógnitas dependientes del tiempo son <img src="https://render.githubusercontent.com/render/math?math=T">, <img src="https://render.githubusercontent.com/render/math?math=c_L"> y <img src="https://render.githubusercontent.com/render/math?math=\gamma"> que quedan descritas por 3 ecuaciones, dos [ecuaciones dinámicas](https://meridiaz.github.io/id-dispersa-aeronaves/teoria.html#sistema-de-referencia-y-ecuaciones-de-una-aeronave) y una ecuación angular <img src="https://render.githubusercontent.com/render/math?math=\dot{\gamma} = \frac{V}{R}">. Nótese que la velocidad es constante en este caso. Desarrollando dichas ecuaciones y agrupando términos se obtiene el siguiente sistema formado por dos ecuaciones 
 
-<img src="https://render.githubusercontent.com/render/math?math=\dot{T} = -A_8sin(2\gamma) - A_9sin(\gamma) + A_{10}cos(\gamma)">
+<img src="https://render.githubusercontent.com/render/math?math=\dot{T} =  A_{10}cos(\gamma) -A_8sin(2\gamma) - A_9sin(\gamma)">
  
 <img src="https://render.githubusercontent.com/render/math?math=\dot{\gamma} = A_6">, 
 
